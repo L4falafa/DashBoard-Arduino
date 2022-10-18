@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  db:
+    build: ./mySqlDatabase
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      TZ: America/Argentina/Buenos_Aires
+    volumes:
+      - data-db-mysql:/var/lib/mysql
+  app:
+    container_name: sensors_arduino
+    build: ./android_sensors
+    restart: always
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: admin
+      DB_NAME: arduino
+    ports:
+      - "3001:3000"
+    depends_on:
+      - db
+    command: npm start
+    volumes:
+      - ./android_sensors:/app
+      - /app/node_modules
+
+volumes:
+  data-db-mysql:
+  
