@@ -11,7 +11,7 @@ services:
       - data-db-mysql:/var/lib/mysql
   app:
     container_name: sensors_arduino
-    build: ./android_sensors
+    build: ./arduino_sensors
     restart: always
     environment:
       DB_HOST: db
@@ -24,7 +24,7 @@ services:
       - db
     command: npm start
     volumes:
-      - ./android_sensors:/app
+      - ./arduino_sensors:/app
       - /app/node_modules
 
 volumes:
